@@ -15,6 +15,7 @@ namespace OOP2
         private string currentOperator = "";
         private bool isMenuOpen = false;
         private Stack<CalculatorState> stateHistory = new Stack<CalculatorState>();
+        private Stack<CalculatorState> redoStack = new Stack<CalculatorState>();
         private void SaveState()
         {
             stateHistory.Push(new CalculatorState
@@ -77,7 +78,7 @@ namespace OOP2
             }
             else if (e.Key == Key.Escape)
             {
-                ClearEntryButton_Click(sender, e);
+                UndoButton_Click(sender, e);
             }
         }
 
@@ -139,58 +140,45 @@ namespace OOP2
         {
             if (double.TryParse(TextBoxInput.Text, out firstNumber))
             {
-                double result = firstNumber * Math.PI;
-                TextBoxInput.Text = result.ToString();
+                SaveState();
+                currentOperator = "π";
+                isOperatorClicked = true;
             }
         }
         private void EpsButton_Click(object sender, RoutedEventArgs e)
         {
             if (double.TryParse(TextBoxInput.Text, out firstNumber))
             {
-                double result = Math.E * firstNumber;
-                TextBoxInput.Text = result.ToString();
+                SaveState();
+                currentOperator = "e";
+                isOperatorClicked = true;
             }
         }
         private void PowerButton_Click(object sender, RoutedEventArgs e)
         {
-            // Перевірка, чи є значення в текстовому полі
             if (double.TryParse(TextBoxInput.Text, out firstNumber))
             {
-                // Запитуємо у користувача степінь
-                string input = Microsoft.VisualBasic.Interaction.InputBox("Введіть степінь:", "Степінь", "2");
-                if (double.TryParse(input, out double exponent))
-                {
-                    // Підносимо число до вказаного степеня
-                    double result = Math.Pow(firstNumber, exponent);
-                    TextBoxInput.Text = result.ToString(); // Виводимо результат
-                }
+                SaveState();
+                currentOperator = "nʸ";
+                isOperatorClicked = true;
             }
         }
         private void SqrtButton_Click(object sender, RoutedEventArgs e)
         {
             if (double.TryParse(TextBoxInput.Text, out firstNumber))
             {
-                if (firstNumber >= 0)
-                {
-                    double result = Math.Sqrt(firstNumber);
-                    TextBoxInput.Text = result.ToString();
-                }
-                else
-                {
-                    MessageBox.Show("Не можна знайти корінь з від’ємного числа!");
-                }
+                SaveState();
+                currentOperator = "√x";
+                isOperatorClicked = true;
             }
         }
         private void LogButton_Click(object sender, RoutedEventArgs e)
         {
-            if (double.TryParse(TextBoxInput.Text, out firstNumber) && firstNumber > 0)
+            if (double.TryParse(TextBoxInput.Text, out firstNumber))
             {
-                double result = Math.Log10(firstNumber);
-                TextBoxInput.Text = result.ToString();
-            }
-            else
-            {
-                MessageBox.Show("Логарифм можна обчислити тільки для чисел більше 0.");
+                SaveState();
+                currentOperator = "log";
+                isOperatorClicked = true;
             }
         }
 
@@ -204,18 +192,46 @@ namespace OOP2
             stateHistory.Clear();
         }
 
-        private void ClearEntryButton_Click(object sender, RoutedEventArgs e)
+        private void UndoButton_Click(object sender, RoutedEventArgs e)
         {
             if (stateHistory.Count > 0)
             {
+                var currentState = new CalculatorState
+                {
+                    Text = TextBoxInput.Text,
+                    FirstNumber = firstNumber,
+                    SecondNumber = secondNumber,
+                    Operator = currentOperator,
+                    IsOperatorClicked = isOperatorClicked
+                };
+
+                redoStack.Push(currentState);
+
                 var previousState = stateHistory.Pop();
-                TextBoxInput.Text = previousState.Text;
-                firstNumber = previousState.FirstNumber;
-                secondNumber = previousState.SecondNumber;
-                currentOperator = previousState.Operator;
-                isOperatorClicked = previousState.IsOperatorClicked;
+                ApplyState(previousState);
             }
         }
+
+        private void RedoButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (redoStack.Count > 0)
+            {
+                SaveState(); // поточний стан іде в історію
+
+                var nextState = redoStack.Pop();
+                ApplyState(nextState);
+            }
+        }
+
+        private void ApplyState(CalculatorState state)
+        {
+            TextBoxInput.Text = state.Text;
+            firstNumber = state.FirstNumber;
+            secondNumber = state.SecondNumber;
+            currentOperator = state.Operator;
+            isOperatorClicked = state.IsOperatorClicked;
+        }
+
 
         private void BackspaceButton_Click(object sender, RoutedEventArgs e)
         {
@@ -253,11 +269,32 @@ namespace OOP2
                             return;
                         }
                         break;
-                    case "nʸ";
+                    case "nʸ":
                         result = Math.Pow(firstNumber, secondNumber);
                         break;
+                    case "log":
+                        if (firstNumber > 0)
+                            result = Math.Log10(firstNumber);
+                        else
+                        {
+                            MessageBox.Show("Логарифм можна обчислити тільки для чисел більше 0!");
+                        }
+                        break;
+                    case "e":
+                        result = Math.E * firstNumber;
+                        break;
+                    case "π":
+                        result = firstNumber * Math.PI;
+                        break;
+                    case "√x":
+                        if (firstNumber >= 0)
+                            result = Math.Sqrt(firstNumber);
+                        else
+                        {
+                            MessageBox.Show("Не можна знайти корінь з від’ємного числа!");
+                        }
+                        break;
                 }
-
                 TextBoxInput.Text = result.ToString();
                 firstNumber = result;
                 isOperatorClicked = false;
@@ -265,17 +302,21 @@ namespace OOP2
         }
         private void BurgerButton_Click(object sender, RoutedEventArgs e)
         {
-            if (isMenuOpen)
-            {
-                ExtraButtonsColumn.Width = new GridLength(0);
-                SetAdditionalButtonsVisibility(Visibility.Collapsed);
-            }
-            else
-            {
-                ExtraButtonsColumn.Width = new GridLength(1, GridUnitType.Star);
-                SetAdditionalButtonsVisibility(Visibility.Visible);
-            }
-            isMenuOpen = !isMenuOpen;
+            ExtraButtonsColumn.Width = new GridLength(1, GridUnitType.Star);
+            SetAdditionalButtonsVisibility(Visibility.Visible);
+            isMenuOpen = true;
+
+            ButtonBurger.Visibility = Visibility.Collapsed;
+            ButtonBurger2.Visibility = Visibility.Visible;
+        }
+        private void Burger2Button_Click(object sender, RoutedEventArgs e)
+        {
+            ExtraButtonsColumn.Width = new GridLength(0);
+            SetAdditionalButtonsVisibility(Visibility.Collapsed);
+            isMenuOpen = false;
+
+            ButtonBurger2.Visibility = Visibility.Collapsed;
+            ButtonBurger.Visibility = Visibility.Visible;
         }
         private void SetAdditionalButtonsVisibility(Visibility visibility)
         {
@@ -284,6 +325,7 @@ namespace OOP2
             ButtonPower.Visibility = visibility;
             ButtonLog.Visibility = visibility;
             ButtonEps.Visibility = visibility;
+            ButtonRedo.Visibility = visibility;
         }
         public MainWindow()
         {
