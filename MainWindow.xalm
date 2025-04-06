@@ -21,7 +21,8 @@
             </Grid.RowDefinitions>
 
             <DockPanel Grid.Row="0">
-                <Button Content="☰" Width="40" Height="40" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10" Click="BurgerButton_Click"/>
+                <Button x:Name="ButtonBurger" Content="☰" Width="40" Height="40" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10" Click="BurgerButton_Click"/>
+                <Button x:Name="ButtonBurger2" Content="&lt;" Width="40" Height="40" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10" Click="Burger2Button_Click" Visibility="Collapsed"/>
                 <TextBox x:Name="TextBoxInput" FontSize="30" TextAlignment="Right" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
             </DockPanel>
 
@@ -58,7 +59,7 @@
                 <Button Content="8" Grid.Row="1" Grid.Column="1" Click="Button_Click"/>
                 <Button Content="9" Grid.Row="1" Grid.Column="2" Click="Button_Click"/>
                 <Button Content="*" Grid.Row="1" Grid.Column="3" Click="MultiplyButton_Click"/>
-                <Button Content="CE" Grid.Row="0" Grid.Column="0" Click="ClearEntryButton_Click"/>
+                <Button Content="↶" Grid.Row="0" Grid.Column="0" Click="UndoButton_Click"/>
                 <Button Content="C" Grid.Row="0" Grid.Column="1" Click="ClearButton_Click"/>
                 <Button Content="←" Grid.Row="0" Grid.Column="2" Click="BackspaceButton_Click"/>
                 <Button Content="/" Grid.Row="0" Grid.Column="3" Click="DivisionButton_Click"/>
@@ -68,7 +69,9 @@
                 <Button x:Name="ButtonPower" Content="nʸ" Grid.Row="3" Grid.Column="4" Click="PowerButton_Click" Visibility="Collapsed"/>
                 <Button x:Name="ButtonLog" Content="log" Grid.Row="4" Grid.Column="4" Click="LogButton_Click" Visibility="Collapsed"/>
                 <Button x:Name="ButtonEps" Content="e" Grid.Row="5" Grid.Column="4" Click="EpsButton_Click" Visibility="Collapsed"/>
+                <Button x:Name="ButtonRedo" Content="↷" Grid.Row="0" Grid.Column="4" Click="RedoButton_Click" Visibility="Collapsed"/>
             </Grid>
         </Grid>
     </Grid>
 </Window>
+
