@@ -5,57 +5,70 @@
         KeyDown="Window_KeyDown">
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*" />
-        </Grid.RowDefinitions>
 
-        <TextBox x:Name="TextBoxInput" Grid.Row="0" FontSize="30" TextAlignment="Right" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="5"/>
-
-        <Button Grid.Row="0" Grid.Column="0" Width="40" Height="41" HorizontalAlignment="Left" Margin="10">
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                <Rectangle Width="30" Height="4" Fill="Black" Margin="2"/>
-                <Rectangle Width="30" Height="4" Fill="Black" Margin="2"/>
-                <Rectangle Width="30" Height="4" Fill="Black" Margin="2"/>
-            </StackPanel>
-        </Button>
-
-        <Grid Grid.Row="1" Margin="5">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="0" x:Name="SideMenuColumn"/>
+        </Grid.ColumnDefinitions>
+        
+        <Grid Grid.Column="0" Grid.ColumnSpan="4">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+            <DockPanel Grid.Row="0">
+                <Button Content="☰" Width="40" Height="40" Grid.Column="4" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="10" Click="BurgerButton_Click"/>
+                <TextBox x:Name="TextBoxInput" FontSize="30" TextAlignment="Right" Margin="5" VerticalAlignment="Center" HorizontalAlignment="Stretch"/>
+            </DockPanel>
 
-            <Button Content="00" Grid.Row="4" Grid.Column="0" Click="Button_Click"/>
-            <Button Content="0" Grid.Row="4" Grid.Column="1" Click="Button_Click"/>
-            <Button Content="," Grid.Row="4" Grid.Column="2" Click="Button_Click"/>
-            <Button Content="=" Grid.Row="4" Grid.Column="3" Click="EqualButton_Click"/>
-            <Button Content="1" Grid.Row="3" Grid.Column="0" Click="Button_Click"/>
-            <Button Content="2" Grid.Row="3" Grid.Column="1" Click="Button_Click"/>
-            <Button Content="3" Grid.Row="3" Grid.Column="2" Click="Button_Click"/>
-            <Button Content="+" Grid.Row="3" Grid.Column="3" Click="PlusButton_Click"/>
-            <Button Content="4" Grid.Row="2" Grid.Column="0" Click="Button_Click"/>
-            <Button Content="5" Grid.Row="2" Grid.Column="1" Click="Button_Click"/>
-            <Button Content="6" Grid.Row="2" Grid.Column="2" Click="Button_Click"/>
-            <Button Content="-" Grid.Row="2" Grid.Column="3" Click="MinusButton_Click"/>
-            <Button Content="7" Grid.Row="1" Grid.Column="0" Click="Button_Click"/>
-            <Button Content="8" Grid.Row="1" Grid.Column="1" Click="Button_Click"/>
-            <Button Content="9" Grid.Row="1" Grid.Column="2" Click="Button_Click"/>
-            <Button Content="*" Grid.Row="1" Grid.Column="3" Click="MultiplyButton_Click"/>
-            <Button Content="CE" Grid.Row="0" Grid.Column="0" Click="ClearEntryButton_Click"/>
-            <Button Content="C"  Grid.Row="0" Grid.Column="1" Click="ClearButton_Click"/>
-            <Button Content="←"  Grid.Row="0" Grid.Column="2" Click="BackspaceButton_Click"/>
-            <Button Content="/"  Grid.Row="0" Grid.Column="3" Click="DivisionButton_Click"/>
+            <Grid Grid.Row="1" Margin="5">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="0" x:Name="ExtraButtonsColumn" />
+                </Grid.ColumnDefinitions>
+
+                <Button Content="00" Grid.Row="4" Grid.Column="0" Click="Button_Click"/>
+                <Button Content="0" Grid.Row="4" Grid.Column="1" Click="Button_Click"/>
+                <Button Content="," Grid.Row="4" Grid.Column="2" Click="Button_Click"/>
+                <Button Content="=" Grid.Row="4" Grid.Column="3" Click="EqualButton_Click"/>
+                <Button Content="1" Grid.Row="3" Grid.Column="0" Click="Button_Click"/>
+                <Button Content="2" Grid.Row="3" Grid.Column="1" Click="Button_Click"/>
+                <Button Content="3" Grid.Row="3" Grid.Column="2" Click="Button_Click"/>
+                <Button Content="+" Grid.Row="3" Grid.Column="3" Click="PlusButton_Click"/>
+                <Button Content="4" Grid.Row="2" Grid.Column="0" Click="Button_Click"/>
+                <Button Content="5" Grid.Row="2" Grid.Column="1" Click="Button_Click"/>
+                <Button Content="6" Grid.Row="2" Grid.Column="2" Click="Button_Click"/>
+                <Button Content="-" Grid.Row="2" Grid.Column="3" Click="MinusButton_Click"/>
+                <Button Content="7" Grid.Row="1" Grid.Column="0" Click="Button_Click"/>
+                <Button Content="8" Grid.Row="1" Grid.Column="1" Click="Button_Click"/>
+                <Button Content="9" Grid.Row="1" Grid.Column="2" Click="Button_Click"/>
+                <Button Content="*" Grid.Row="1" Grid.Column="3" Click="MultiplyButton_Click"/>
+                <Button Content="CE" Grid.Row="0" Grid.Column="0" Click="ClearEntryButton_Click"/>
+                <Button Content="C" Grid.Row="0" Grid.Column="1" Click="ClearButton_Click"/>
+                <Button Content="←" Grid.Row="0" Grid.Column="2" Click="BackspaceButton_Click"/>
+                <Button Content="/" Grid.Row="0" Grid.Column="3" Click="DivisionButton_Click"/>
+
+                <Button x:Name="ButtonSqrt" Content="√x" Grid.Row="1" Grid.Column="4" Click="SqrtButton_Click" Visibility="Collapsed"/>
+                <Button x:Name="ButtonPi" Content="π" Grid.Row="2" Grid.Column="4" Click="PiButton_Click" Visibility="Collapsed"/>
+                <Button x:Name="ButtonPower" Content="nʸ" Grid.Row="3" Grid.Column="4" Click="PowerButton_Click" Visibility="Collapsed"/>
+                <Button x:Name="ButtonLog" Content="log" Grid.Row="4" Grid.Column="4" Click="LogButton_Click" Visibility="Collapsed"/>
+                <Button x:Name="ButtonEps" Content="e" Grid.Row="5" Grid.Column="4" Click="EpsButton_Click" Visibility="Collapsed"/>
+            </Grid>
         </Grid>
     </Grid>
 </Window>
